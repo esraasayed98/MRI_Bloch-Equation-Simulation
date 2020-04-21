@@ -18,25 +18,29 @@ So, it is also based on some main common assumptions which are
  Now, we can talk about our submission step by step:
  # 1) K-space: 
 
+ *k*-space often refers to the *temporary image space*, usually a matrix, in which data from digitized MR signals are stored during data acquisition. When *k*-space is full (at the end of the scan) the data are mathematically processed to produce a final image. Thus *k*-space holds *raw* data before *reconstruction*.
+
+now the implementation:
+
 
  ```
- img = cv2.imread('brain.jpeg',0)
+img = cv2.imread('brain.jpeg',0)
 f = np.fft.fft2(img)
 fshift = np.fft.fftshift(f)
-magnitude = 20*np.log(np.abs(fshift))
-magnitude=np.asarray(magnitude , dtype=np.uint8)
-```
+k_space = 20*np.log(np.abs(fshift))
+
+ ```
 Then, for the sake of plotting and viewing the result, we have implemented the following code lines:
 ```
 plt.subplot(121),plt.imshow(img, cmap = 'gray')
 plt.title('Input Image'), plt.xticks([]), plt.yticks([])
-plt.subplot(122),plt.imshow(magnitude, cmap = 'gray')
+plt.subplot(122),plt.imshow(k_space, cmap = 'gray')
 plt.title('k-space'), plt.xticks([]), plt.yticks([])
 plt.show() 
-``` 
+```
 Now we can say that the previous code managed to get the K-space of the image resulting in:
-![picture](images/K-space_result.png)
 
+![picture](images/K-space_result.png)
 
 
 
@@ -44,10 +48,10 @@ Now we can say that the previous code managed to get the K-space of the image re
 ---
 # 2) Simulating Non-Uniformity effect
 The required at this point is to find the difference in angular frequency between the molecules of hydrogen atoms.
-This requirement is based on the previously implemented Non-Uniformity effect function in Assignment#1 submission, which requireed simulating the non-uniformity effect; where its effect is imposed in the axial (z), and to make a plot of Bz(z).
+This requirement is based on the previously implemented Non-Uniformity effect function in Assignment#1 submission, which required simulating the non-uniformity effect; where its effect is imposed in the axial (z), and to make a plot of Bz(z).
 
 This function was thought about how it can be implemented by creating random values representing non-uniform effect of variation magnetic field within range of 3T imposed in the axial (z).
-The following code creates 15 random values from the scpecified range and append the list"NonUniform" with the new values representing the non-uniformity, and the new generated value is multiplied by (2*3.14*42.58) to get the corresponding angular frequency , where:
+The following code creates 15 random values from the specified range and append the list"Non-Uniform" with the new values representing the non-uniformity, and the new generated value is multiplied by (2*3.14*42.58) to get the corresponding angular frequency , where:
 
 42.58 ->(Gamma bar) is the gyromagnetic ratio in MHz/T , so, we needed to multiply it by (2*pi) to get (Gamma)
 
@@ -55,7 +59,7 @@ and according to the Larmor Equation:
    ```
                                 ω = γB
    ```
-   the angular frequency equals multiplying the geromagnetic ratio (Gamma) by the magnetic field
+   the angular frequency equals multiplying the gyromagnetic ratio (Gamma) by the magnetic field
 ```
 random.seed(1)
 NonUniform_B=[]
@@ -103,7 +107,7 @@ plt.show()
 resulting in the following plot
 
 ![picture](images/angular_frequency&Bz_along_z_axis.png)
-which visualizes each resulting value of non-unifrom magnetic field and its corresponding frequency.
+which visualizes each resulting value of non-uniform magnetic field and its corresponding frequency.
 
 But we are seeking for representing the relation between the resulted non-uniform magnetic field and angular frequency which is supposed to be linear relation: 
 ```
@@ -132,7 +136,6 @@ axs[2].legend(loc='upper center')
 ![picture](images/angular_frequency&Bz.png)
 
 and the slope of this linear relation is the gyromagnetic ratio (Gamma)
-
 
 ---
 ---
@@ -216,7 +219,7 @@ imageio.mimsave('bulk_mag_trajectory.gif', images, duration=0.1)
 
 
 ### Requirements:
-For each point in this simluation there were some requirements to achive its results, like installing and importing some important libraries which are:
+For each point in this simulation there were some requirements to achieve its results, like installing and importing some important libraries which are:
 1) numpy : for dealing with data stored in arrays.
 2) matplotlib : for plotting all graphs and components.
 3) cv2 : for reading image to calculate its Fourier Transform.
