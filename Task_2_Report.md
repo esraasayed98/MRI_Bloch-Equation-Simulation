@@ -81,7 +81,7 @@ print(x)
 ```
 the previous code lines resulted in the following table of Angular frequencies (rad/sec) and magnetic field intensity (T). 
 
-![picture](images/Table_freq&B.png)
+![picture](images/Table_freq&B.PNG)
 
 
 After representing the values, we need to plot them to visualize the difference between frequencies with non-uniform effect of magnetic filed :
